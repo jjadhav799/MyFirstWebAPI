@@ -1,4 +1,3 @@
-
 namespace MyFirstWebAPI
 {
     public class Program
@@ -8,25 +7,26 @@ namespace MyFirstWebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Swagger/OpenAPI configuration
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            // Enable Swagger middleware for all environments
+            app.UseSwagger();
+
+            // Configure Swagger UI to appear at root URL "/"
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFirstWebAPI v1");
+                c.RoutePrefix = string.Empty; // Makes Swagger UI accessible at "/"
+            });
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 
